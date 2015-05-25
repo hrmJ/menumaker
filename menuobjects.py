@@ -16,9 +16,12 @@ class Weekmenu:
     """menu that consists of days"""
     activemenu = False
     def __init__(self):
+        Weekmenu.activemenu = self
         self.days = list()
         self.startdate = ""
         self.enddate = ""
+        #For counting different dishes
+        self.dishes = dict()
         clearterm()
         self.days.append(Day(askDate()))
         self.printmenu()
@@ -34,7 +37,6 @@ class Weekmenu:
             self.printmenu()
             insertmore.prompt_valid()
         #Make this menu the current menu 
-        Weekmenu.activemenu = self
         self.WriteToDb()
 
     def getNextDate(self):
@@ -133,6 +135,22 @@ class Weekmenu:
             session.add(MenuMeal(day=day.date,dishname=day.dinner.dish,mealtype='dinner'))
         session.commit()
 
+    def ListDishes(self):
+        """Print the different dishes in the menu"""
+        count = 0
+        alldishes = list()
+        for day in self.days:
+            if day.lunch.dish not in alldishes:
+                alldishes.append(day.lunch.dish)
+                self.dishes[str(count)] = day.lunch.dish
+                count += 1
+            if day.dinner.dish not in alldishes:
+                alldishes.append(day.dinner.dish)
+                self.dishes[str(count)] = day.dinner.dish
+                count += 1
+        self.dishmenu = multimenu(self.dishes,'Valitse jokin listalla jo olevista ruokalajeista')
+
+
 
     def BuildShoppingList(self):
         """Write the menu to the database"""
@@ -209,6 +227,9 @@ class Meal:
         elif viewmenu.answer == 'o':
             self.viewdb(cookingmethod='uuni')
         #If a longer string is provided by the user
+        elif viewmenu.answer =='1':
+            Weekmenu.activemenu.ListDishes()
+            self.dish = Weekmenu.activemenu.dishes[Weekmenu.activemenu.dishmenu.answer]
         else:
             self.dish = viewmenu.answer
 
