@@ -2,9 +2,11 @@
 
 class Menu:
     """Any command line menus that are used to ask the user for input"""
-    def prompt_valid(self, reverseorder=False, definedquestion='',allowlong=False):
+    def prompt_valid(self, reverseorder=False, definedquestion='',allowlong=False,returnKey=True,redefinedAnswers=False):
             if definedquestion:
                 self.question = definedquestion
+            if redefinedAnswers:
+                self.validanswers = redefinedAnswers
             #Make a printable string from the dict:
             options = '\n                '.join("{!s}: {!s}".format(key,val) for (key,val) in sorted(self.validanswers.items()))
             question = "{}\n{}{}\n>".format(self.question,'                ',options)
@@ -16,6 +18,10 @@ class Menu:
                 if allowlong and len(self.answer) > 3:
                     break
                 self.answer = input("Please give a valid answer.\n {}".format(question))
+            if returnKey:
+                return self.answer
+            else:
+                return self.validanswers[self.answer]
 
     def prompt(self):
             #Make a printable string from the dict:

@@ -12,6 +12,7 @@ class MainMenu:
     the comand line menu options and actions"""
     mainanswers = {    'n': 'Luo uusi ruokalista',
                        'q': 'Lopeta',
+                       'a': 'Lisää uusi ruokalaji',
                        'v': 'Tarkastele ruokalajeja'}
 
     def __init__(self):
@@ -44,6 +45,13 @@ class MainMenu:
             print(dish.name)
         input('...')
 
+    def addDish(self):
+        """Add a new dish to database"""
+        #Con.loadSession()
+        newdish = Dish()
+        newdish.addSingleDish(Con.session)
+        Con.session.add(newdish)
+        Con.session.commit()
 
     def MenuChooser(self,answer):
         if answer == 'q':
@@ -54,6 +62,8 @@ class MainMenu:
             Weekmenu.activemenu.editMenu()
         elif answer == 'v':
             self.viewdishes()
+        elif answer == 'a':
+            self.addDish()
         elif answer == 'w':
             Weekmenu.activemenu.printofile()
         elif answer == 's':
