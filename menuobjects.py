@@ -275,14 +275,14 @@ class Meal:
             self.dish = res[int(dishmenu.answer)].name
 
 class Con:
-    engine = create_engine('sqlite:///food.db', echo=False)
+    engine = create_engine('sqlite:////home/juho/Dropbox/koti/food.db', echo=False)
     # create a Session
     Session = sessionmaker(bind=engine)
     session = Session()
 
 def createsession():
     """Create a temporal session object"""
-    engine = create_engine('sqlite:///food.db', echo=False)
+    engine = create_engine('sqlite:////home/juho/Dropbox/koti/food.db', echo=False)
     # create a Session
     Session = sessionmaker(bind=engine)
     return Session()
