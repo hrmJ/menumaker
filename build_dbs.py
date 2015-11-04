@@ -23,7 +23,7 @@ class Dish(Base):
         """Add a single dish manually from the command line"""
         os.system('cls' if os.name == 'nt' else 'clear')
         # Fill in the information about the Dish
-        newdishmenu =  multimenu(validanswers={'c':'kana','f':'kala','v':'kasvis'})
+        newdishmenu =  multimenu(validanswers={'c':'kana','f':'kala','v':'kasvis','m':'liha'})
         self.foodtype = newdishmenu.prompt_valid(definedquestion='Anna ruokalajin tyyppi', returnKey=False)
         self.cookingmethod = newdishmenu.prompt_valid(definedquestion='Anna valmistustapa',returnKey=False, redefinedAnswers={'o':'uuni', 's':'liesi'})
         self.name = input('Anna ruokalajin nimi:')
