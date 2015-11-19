@@ -200,15 +200,16 @@ class Meal:
         """Create a new meal"""
         self.mealtype = mealtype
         print(mealtype + ":")
-        viewmenu = multimenu({'1':'Tarkastele tämän ruokalistan ruokia',
-                              'a':'Tarkastele kaikkia tietokannan ruokia',
-                              'f':'Tarkastele kalaruokia',
-                              'c':'Tarkastele kanaruokia',
-                              'm':'Tarkastele liharuokia',
-                              'v':'Tarkastele kasvisruokia',
-                              's':'Tarkastele liedellä valmistettavia',
-                              'o':'Tarkastele uunissa valmistettavia',
-                              'e':'Ehdota'
+        viewmenu = multimenu({'1' : 'Tarkastele tämän ruokalistan ruokia',
+                              'a' : 'Tarkastele kaikkia tietokannan ruokia',
+                              'f' : 'Tarkastele kalaruokia',
+                              'c' : 'Tarkastele kanaruokia',
+                              'm' : 'Tarkastele liharuokia',
+                              'v' : 'Tarkastele kasvisruokia',
+                              's' : 'Tarkastele liedellä valmistettavia',
+                              'o' : 'Tarkastele uunissa valmistettavia',
+                              'mm': 'Tarkastele valmiita menuja',
+                              'e' : 'Ehdota'
                               })
         viewmenu.question = 'Haluatko tutkia tietokantaa? (Voit myös kirjoittaa suoraan vastauksen)'
         viewmenu.prompt_valid(allowlong=True)
@@ -230,19 +231,29 @@ class Meal:
         elif viewmenu.answer =='1':
             Weekmenu.activemenu.ListDishes()
             self.dish = Weekmenu.activemenu.dishes[Weekmenu.activemenu.dishmenu.answer]
+        elif viewmenu.answer == 'mm':
+            #Pre-defined menus
+            pfmenus = dict()
+            idx = 1
+            for pfmenu in  Con.session.query(Dish.predefmenu).filter(Dish.predefmenu != None).distinct():
+                pfmenus[str(idx)] = pfmenu[0]
+                idx += 1
+            pfmenuprompt = multimenu(pfmenus,'Mitä valmismenua tarkastellaan?')
+            self.viewdb(pfmenu=pfmenuprompt.validanswers[pfmenuprompt.answer])
         else:
             self.dish = viewmenu.answer
 
-    def viewdb(self,foodtype='all',cookingmethod='all'):
+    def viewdb(self,foodtype='all',cookingmethod='all',pfmenu=None):
         """View the dishes in the database filtered by some criteria and choose one of them"""
         #Evaluate the criteria
-        if foodtype == 'all' and cookingmethod == 'all':
+        if pfmenu:
+            res = Con.session.query(Dish).filter(Dish.predefmenu == pfmenu).all()
+        elif foodtype == 'all' and cookingmethod == 'all':
             res = Con.session.query(Dish).all()
         elif cookingmethod == 'all':
             query = Con.session.query(Dish).filter(Dish.foodtype == foodtype)
             res = query.all()
         else:
-            input(cookingmethod)
             query = Con.session.query(Dish).filter(Dish.cookingmethod == cookingmethod)
             res = query.all()
         #Build a list of results

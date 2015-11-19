@@ -16,6 +16,7 @@ class Dish(Base):
     name = Column(String)  
     # Foodtype: meat, fish, chicken, vege etc
     foodtype = Column(String)  
+    predefmenu = Column(String)  
     # cookingmethod: stove, oven etc
     cookingmethod = Column(String)
 
@@ -47,7 +48,6 @@ class Dish(Base):
             # add the Ingredient as a new db object
             self.ingredients.append(Ingredient(thisIngredient))
  
-
 class Ingredient(Base):
     """Ingredients are linked to dishes by the linkid column"""
     __tablename__ = "ingredients"
@@ -73,7 +73,7 @@ class MenuMeal(Base):
     day = Column(Date)  
     # Foodtype: meat, fish, chicken, vege etc
     mealtype = Column(String)  
-    mealname = Column(String)  
+    menuname = Column(String)  
     # cookingmethod: stove, oven etc
     dish_id = Column(Integer)
     dishname = Column(String)

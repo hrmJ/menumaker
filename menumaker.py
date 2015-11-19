@@ -2,7 +2,7 @@ import os
 import sys
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from build_dbs import Dish, Ingredient
+from build_dbs import Dish, Ingredient, MenuMeal
 from clinterface import Menu, yesnomenu, multimenu
 from menuobjects import Weekmenu, Day, Meal, Con, clearterm
 
