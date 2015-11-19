@@ -73,6 +73,7 @@ class MenuMeal(Base):
     day = Column(Date)  
     # Foodtype: meat, fish, chicken, vege etc
     mealtype = Column(String)  
+    mealname = Column(String)  
     # cookingmethod: stove, oven etc
     dish_id = Column(Integer)
     dishname = Column(String)
